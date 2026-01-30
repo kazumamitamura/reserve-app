@@ -24,13 +24,13 @@ export default async function AdminLayout({
   if (profile?.role !== "admin") redirect("/dashboard");
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white shadow-sm">
+    <div className="min-h-screen bg-sage-50/40">
+      <header className="sticky top-0 z-10 border-b border-sage-200/80 bg-white/95 shadow-sm backdrop-blur">
         <div className="mx-auto flex h-14 max-w-4xl items-center justify-between px-4">
           <Link href="/admin" className="flex items-center gap-2 text-slate-800">
             <Calendar className="h-6 w-6 text-primary-600" />
             <span className="font-semibold">Reserve-One</span>
-            <span className="rounded bg-primary-100 px-2 py-0.5 text-xs font-medium text-primary-700">
+            <span className="rounded bg-sage-200 px-2 py-0.5 text-xs font-medium text-sage-700">
               管理
             </span>
           </Link>

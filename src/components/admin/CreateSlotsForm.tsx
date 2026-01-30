@@ -1,12 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
 import { createSlots, type SlotCreateState } from "@/app/actions/slots";
 import { toast } from "sonner";
+import { RecurringSlotsForm } from "./RecurringSlotsForm";
 
 export function CreateSlotsForm() {
+  const [mode, setMode] = useState<"single" | "recurring">("single");
   const [state, formAction] = useFormState(createSlots, null as SlotCreateState);
   const router = useRouter();
 
@@ -19,7 +22,29 @@ export function CreateSlotsForm() {
   }, [state, router]);
 
   return (
-    <form action={formAction} className="mt-4 space-y-4">
+    <div className="mt-4">
+      <div className="mb-4 flex gap-2">
+        <button
+          type="button"
+          onClick={() => setMode("single")}
+          className={`rounded-lg px-3 py-2 text-sm font-medium transition ${
+            mode === "single" ? "bg-sage-600 text-white" : "bg-sage-100 text-sage-700 hover:bg-sage-200"
+          }`}
+        >
+          単日作成
+        </button>
+        <button
+          type="button"
+          onClick={() => setMode("recurring")}
+          className={`rounded-lg px-3 py-2 text-sm font-medium transition ${
+            mode === "recurring" ? "bg-sage-600 text-white" : "bg-sage-100 text-sage-700 hover:bg-sage-200"
+          }`}
+        >
+          繰り返し作成
+        </button>
+      </div>
+      {mode === "single" ? (
+    <form action={formAction} className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="date" className="block text-sm font-medium text-slate-700">
@@ -30,28 +55,32 @@ export function CreateSlotsForm() {
             name="date"
             type="date"
             required
-            className="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+            className="mt-1 block w-full rounded-lg border border-sage-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sage-400 focus:outline-none focus:ring-1 focus:ring-sage-300"
           />
         </div>
         <div>
           <label htmlFor="times" className="block text-sm font-medium text-slate-700">
-            開始時刻（カンマまたは改行区切り）
+            開始時刻（9:00〜18:00、30分刻み・カンマ区切り）
           </label>
           <textarea
             id="times"
             name="times"
             rows={3}
-            placeholder="10:00, 11:00, 12:00"
-            className="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+            placeholder="9:00, 10:00, 11:00, 14:00, 15:00"
+            className="mt-1 block w-full rounded-lg border border-sage-200 px-3 py-2 text-slate-900 shadow-sm focus:border-sage-400 focus:outline-none focus:ring-1 focus:ring-sage-300"
           />
         </div>
       </div>
       <button
         type="submit"
-        className="rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-medium text-white shadow hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition"
+        className="rounded-lg bg-sage-500 px-4 py-2.5 text-sm font-medium text-white shadow hover:bg-sage-600 focus:outline-none focus:ring-2 focus:ring-sage-400 focus:ring-offset-2 transition"
       >
         枠を作成
       </button>
     </form>
+      ) : (
+        <RecurringSlotsForm />
+      )}
+    </div>
   );
 }

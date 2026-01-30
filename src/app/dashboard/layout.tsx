@@ -24,8 +24,8 @@ export default async function DashboardLayout({
   if (profile?.role === "admin") redirect("/admin");
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white shadow-sm">
+    <div className="min-h-screen bg-sage-50/40">
+      <header className="sticky top-0 z-10 border-b border-sage-200/80 bg-white/95 shadow-sm backdrop-blur">
         <div className="mx-auto flex h-14 max-w-4xl items-center justify-between px-4">
           <Link href="/dashboard" className="flex items-center gap-2 text-slate-800">
             <Calendar className="h-6 w-6 text-primary-600" />

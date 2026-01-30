@@ -1,12 +1,44 @@
--- Reserve-One: 予約管理システム スキーマ（Master-Portfolio-DB 共用）
--- ※ profiles は DROP しません。game_results / user_progress 等が参照しています。
+-- Reserve-One: 予約管理システム スキーマ
 -- Supabase SQL Editor で実行してください。
+-- ※ profiles が既に存在する場合（他アプリと共用）は、0. をスキップして 1. から実行してください。
 
 -- ============================================================
--- 1. profiles に "role" 列を追加（既存テーブルを壊さない）
+-- 0. profiles が無い場合のみ作成（新規 Supabase プロジェクト用）
+-- ============================================================
+CREATE TABLE IF NOT EXISTS public.profiles (
+  id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  full_name text,
+  "role" text NOT NULL DEFAULT 'customer',
+  updated_at timestamptz DEFAULT now()
+);
+
+-- 新規ユーザー登録時に profiles 行を作成（既存トリガーと競合しないよう別名を使用）
+CREATE OR REPLACE FUNCTION public.reserve_one_ensure_profile()
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public
+AS $$
+BEGIN
+  INSERT INTO public.profiles (id, full_name, "role")
+  VALUES (
+    NEW.id,
+    COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'display_name'),
+    'customer'
+  )
+  ON CONFLICT (id) DO NOTHING;
+  RETURN NEW;
+END;
+$$;
+DROP TRIGGER IF EXISTS reserve_one_on_auth_user_created ON auth.users;
+CREATE TRIGGER reserve_one_on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.reserve_one_ensure_profile();
+
+-- ============================================================
+-- 1. profiles に "role" および表示名用カラムを追加（既存を壊さない）
 -- ============================================================
 ALTER TABLE public.profiles
   ADD COLUMN IF NOT EXISTS "role" text NOT NULL DEFAULT 'customer';
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS full_name text;
 
 -- CHECK 制約（teacher は math-challenge 等との共存のため許可）
 ALTER TABLE public.profiles DROP CONSTRAINT IF EXISTS reserve_one_profiles_role_check;
@@ -101,11 +133,9 @@ AS $$
 BEGIN
   IF NEW.email IN (
     'mitamuraka@haguroko.ed.jp'
-    -- 追加例: 'your-admin@yourdomain.com'
+    -- 管理者にしたいメールを追加: 'your-admin@yourdomain.com'
   ) THEN
-    UPDATE public.profiles
-    SET "role" = 'admin'
-    WHERE id = NEW.id;
+    UPDATE public.profiles SET "role" = 'admin' WHERE id = NEW.id;
   END IF;
   RETURN NEW;
 END;

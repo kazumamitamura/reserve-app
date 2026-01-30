@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className="antialiased min-h-screen bg-slate-50 text-slate-900">
+      <body className="antialiased min-h-screen bg-sage-50 text-slate-800">
         {children}
         <Toaster richColors position="top-center" closeButton />
       </body>

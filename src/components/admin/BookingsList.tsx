@@ -23,10 +23,10 @@ export function BookingsList({ slots }: { slots: Slot[] }) {
       {slots.map((slot) => {
         const profile = getProfile(slot);
         return (
-          <li
-            key={slot.id}
-            className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
-          >
+        <li
+          key={slot.id}
+          className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-sage-200/80 bg-sage-50/50 px-4 py-3"
+        >
             <div>
               <span className="font-medium text-slate-900">
                 {format(new Date(slot.start_time), "M月d日(E) HH:mm", { locale: ja })}
@@ -37,7 +37,7 @@ export function BookingsList({ slots }: { slots: Slot[] }) {
               </span>
               {profile && (
                 <span className="ml-2 text-sm text-slate-600">
-                  （{profile.display_name || profile.email}）
+                  （{profile.full_name || "予約済み"}）
                 </span>
               )}
             </div>

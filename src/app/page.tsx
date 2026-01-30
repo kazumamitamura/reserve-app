@@ -11,10 +11,10 @@ export default async function HomePage() {
 
   if (!user) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-b from-primary-50 to-white">
+      <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-b from-sage-50 to-white">
         <div className="max-w-md w-full text-center space-y-8">
           <div className="flex justify-center">
-            <div className="w-16 h-16 rounded-2xl bg-primary-600 flex items-center justify-center shadow-lg">
+            <div className="w-16 h-16 rounded-2xl bg-sage-500 flex items-center justify-center shadow-lg">
               <Calendar className="w-8 h-8 text-white" />
             </div>
           </div>
@@ -25,14 +25,14 @@ export default async function HomePage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/login"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-medium text-white shadow hover:bg-primary-700 transition"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-sage-500 px-5 py-3 text-sm font-medium text-white shadow hover:bg-sage-600 transition"
             >
               <LogIn className="w-4 h-4" />
               ログイン
             </Link>
             <Link
               href="/register"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 transition"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-sage-300 bg-white px-5 py-3 text-sm font-medium text-slate-700 shadow-sm hover:bg-sage-50 transition"
             >
               <UserPlus className="w-4 h-4" />
               新規登録

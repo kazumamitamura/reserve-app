@@ -23,8 +23,8 @@ export function SlotCards({
 }) {
   if (slots.length === 0) {
     return (
-      <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-        <CalendarClock className="mx-auto h-12 w-12 text-slate-300" />
+      <div className="rounded-2xl border border-sage-200/80 bg-white p-8 text-center shadow-sm">
+        <CalendarClock className="mx-auto h-12 w-12 text-sage-200" />
         <p className="mt-2 text-slate-600">いま予約できる枠はありません。</p>
         <p className="mt-1 text-sm text-slate-500">しばらくしてからご確認ください。</p>
       </div>
@@ -38,12 +38,12 @@ export function SlotCards({
         const available = !slot.is_booked;
 
         return (
-          <div
-            key={slot.id}
-            className="flex flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-slate-300"
-          >
-            <div className="flex items-center gap-2">
-              <CalendarClock className="h-5 w-5 text-primary-600" />
+        <div
+          key={slot.id}
+          className="flex flex-col rounded-2xl border border-sage-200/80 bg-white p-4 shadow-sm transition hover:border-sage-300"
+        >
+          <div className="flex items-center gap-2">
+            <CalendarClock className="h-5 w-5 text-sage-500" />
               <span className="font-medium text-slate-900">
                 {format(new Date(slot.start_time), "M月d日(E) HH:mm", { locale: ja })}
               </span>
